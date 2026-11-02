@@ -19,22 +19,23 @@ MyPortfolio/
 └── README.md
 ```
 
-## 🛠️ Technologies & Features
+Built With
 
-**Technologies**
-- HTML5
-- CSS3
-- Vanilla JavaScript
+HTML5
 
-**Features**
-- Responsive design for mobile, tablet and desktop.
-- Dark and light theme with saved preferences.
-- Interactive mobile navigation.
-- Smooth scrolling and scroll animations.
-- Accessible navigation and keyboard support.
-- Reduced-motion support.
-- Lightweight design with no external dependencies.
+CSS3
 
+Vanilla JavaScript
+
+Purpose
+
+Showcase my technical skills and projects.
+
+Highlight my education and certifications.
+
+Share my experience and learning journey in cloud computing and networking.
+
+Provide easy access to my professional profiles and contact information.
 ## 📄 License
 
 This is a personal portfolio project. Its structure and implementation can be used as inspiration for other personal portfolio websites.
