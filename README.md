@@ -19,23 +19,19 @@ MyPortfolio/
 └── README.md
 ```
 
-Built With
+## Built With
 
-HTML5
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
-CSS3
+## Purpose
 
-Vanilla JavaScript
-
-Purpose
-
-Showcase my technical skills and projects.
-
-Highlight my education and certifications.
-
-Share my experience and learning journey in cloud computing and networking.
-
-Provide easy access to my professional profiles and contact information.
+- Showcase my technical skills and projects.
+- Highlight my education and certifications.
+- Share my learning journey in cloud computing and networking.
+- Provide access to my professional profiles and contact information.
+  
 ## 📄 License
 
 This is a personal portfolio project. Its structure and implementation can be used as inspiration for other personal portfolio websites.
