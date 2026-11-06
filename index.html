@@ -14,9 +14,14 @@
 
     <title>Vineet — Aspiring Cloud Engineer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338BDF8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z'/></svg>" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
     <!-- ===== HEADER / NAVIGATION ===== -->
     <header class="header" id="header">
@@ -24,6 +29,8 @@
             <a href="#hero" class="nav-brand">
                 <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                    <path class="brand-route" d="M8 14h3l2-3h3"/>
+                    <circle class="brand-node" cx="8" cy="14" r="1"/><circle class="brand-node" cx="16" cy="11" r="1"/>
                 </svg>
                 Vineet
             </a>
@@ -31,6 +38,7 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#field-notes" class="nav-link">Field Notes</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#certifications" class="nav-link">Certifications</a></li>
                 <li><a href="#education" class="nav-link">Education</a></li>
@@ -38,7 +46,11 @@
             </ul>
 
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+                <button class="palette-trigger" id="paletteTrigger" type="button" aria-haspopup="dialog" aria-controls="commandPalette" aria-label="Open command palette, Control K">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                    <span class="palette-trigger-label">Jump to</span><kbd>Ctrl K</kbd>
+                </button>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" title="Switch to light theme">
                     <!-- Sun icon (shown in dark mode) -->
                     <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"/>
@@ -57,7 +69,7 @@
                     </svg>
                 </button>
 
-                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+                <button class="hamburger" id="hamburger" type="button" aria-label="Toggle navigation menu" aria-controls="navMenu" aria-expanded="false">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -66,22 +78,62 @@
         </nav>
     </header>
 
-    <main>
+    <dialog class="command-palette" id="commandPalette" aria-labelledby="paletteTitle">
+        <div class="palette-shell">
+            <h2 class="visually-hidden" id="paletteTitle">Quick navigation</h2>
+            <label class="visually-hidden" for="paletteInput">Search sections and actions</label>
+            <div class="palette-search-row"><span aria-hidden="true">⌕</span><input id="paletteInput" type="search" role="combobox" aria-autocomplete="list" aria-controls="paletteResults" aria-expanded="false" placeholder="Jump to a section or action…" autocomplete="off"><kbd>ESC</kbd></div>
+            <div class="palette-results" id="paletteResults" role="listbox" aria-label="Navigation and actions"></div>
+            <p class="palette-help">Use ↑ ↓ to choose · Enter to open</p>
+        </div>
+    </dialog>
+
+    <main id="main-content" tabindex="-1">
 
         <!-- ===== HERO SECTION ===== -->
         <section class="hero" id="hero">
+            <canvas class="matrix-canvas" id="matrixCanvas" aria-hidden="true"></canvas>
+            <div class="hero-terminal-backdrop" aria-hidden="true">
+                <div class="hero-terminal-window">
+                    <div class="hero-terminal-bar"><span>vineet@cloud: ~/portfolio</span><span><i></i> SIMULATED SHELL · LIVE</span></div>
+                    <div class="hero-terminal-lines">
+                        <p><b>01</b> <em>$</em> traceroute portfolio</p>
+                        <p><b>02</b> 1  <span>browser.local</span>  <i>→</i> dns resolver</p>
+                        <p><b>03</b> 2  <span>route resolved</span>  <i>→</i> edge network</p>
+                        <p><b>04</b> 3  <span>cache hit</span>  <i>→</i> origin storage</p>
+                        <p><b>05</b> <em>$</em> aws s3 sync ./site s3://portfolio</p>
+                        <p><b>06</b> <span>upload complete</span> · https enabled</p>
+                        <p><b>07</b> <em>$</em> systemctl status curious</p>
+                        <p><b>08</b> <span>active</span> · learning, building, iterating</p>
+                        <p class="hero-terminal-prompt"><b>09</b> <em>vineet@cloud:~$</em> <span id="heroTerminalCommand"></span><i></i></p>
+                    </div>
+                    <span class="hero-terminal-scan"></span>
+                </div>
+            </div>
             <div class="container hero-content">
                 <div class="hero-text">
                     <span class="status-badge">
                         <span class="status-dot"></span>
                         Open to Opportunities
                     </span>
-                    <h1 class="hero-title">Hello, I'm <span class="accent">Vineet</span></h1>
+                    <h1 class="hero-title">Hello, I'm<br class="hero-name-break"><span class="accent typed-name" id="typedName" aria-hidden="true">Vineet</span><span class="visually-hidden">Vineet</span></h1>
                     <p class="hero-subtitle">Aspiring Cloud Engineer · Cloud &amp; DevOps Enthusiast</p>
                     <p class="hero-description">Recent Computer Science graduate passionate about building reliable cloud infrastructure, mastering networking fundamentals, and automating system workflows.</p>
                     <div class="hero-cta">
                         <a href="#projects" class="btn btn-primary">Explore My Work</a>
                         <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+                        <a href="https://drive.google.com/uc?export=download&amp;id=1ZWWrwh-jcXW6zA3yEWnnm6UH40CMemNG" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Download Vineet's resume">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+                            Download Resume
+                        </a>
+                    </div>
+                    <div class="arcade-invite">
+                        <button class="arcade-launch" id="arcadeLaunch" type="button" aria-haspopup="dialog" aria-controls="arcadeDialog">
+                            <span class="arcade-launch-icon" aria-hidden="true">▶</span>
+                            <span>Curious? Play Vineet.exe</span>
+                            <span class="arcade-launch-arrow" aria-hidden="true">↗</span>
+                        </button>
+                        <span class="arcade-hint">A tiny cloud-networking game is hiding in this portfolio.</span>
                     </div>
                     <div class="hero-socials">
                         <a href="https://github.com/vvr-here" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" title="GitHub">
@@ -94,16 +146,26 @@
                                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                             </svg>
                         </a>
-                        <a href="mailto:vineetvikramrao9369@gmail.com" aria-label="Send Email" title="Email">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <button class="copy-email-trigger" type="button" data-email="vineetvikramrao9369@gmail.com" aria-label="Copy email address" title="Copy email address">
+                            <svg class="icon-copy" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="4" width="20" height="16" rx="2"/>
                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                             </svg>
-                        </a>
+                            <svg class="icon-check" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
                     </div>
                 </div>
 
                 <div class="hero-visual">
+                    <div class="cloud-route" aria-label="A web request travels from your browser through DNS and a CDN edge to cloud storage.">
+                        <span class="cloud-route-label">A request's journey</span>
+                        <div class="cloud-route-track" aria-hidden="true">
+                            <span class="route-stop">Browser</span><span class="route-link"><i></i></span>
+                            <span class="route-stop">DNS</span><span class="route-link"><i></i></span>
+                            <span class="route-stop">CDN edge</span><span class="route-link"><i></i></span>
+                            <span class="route-stop">Cloud</span>
+                        </div>
+                    </div>
                     <div class="terminal-card">
                         <div class="terminal-header">
                             <div class="terminal-dots">
@@ -137,10 +199,13 @@
                                 <span class="status-dot"></span>
                                 Ready for opportunities
                             </div>
-                            <div class="terminal-line">
-                                <span class="terminal-prompt">$</span>
-                                <span class="terminal-cursor">_</span>
-                            </div>
+                            <div class="terminal-session" id="terminalSession" aria-live="polite" aria-relevant="additions"></div>
+                            <form class="terminal-line terminal-input-line" id="terminalForm" autocomplete="off">
+                                <label class="terminal-prompt" for="terminalInput" aria-hidden="true">$</label>
+                                <label class="visually-hidden" for="terminalInput">Type a portfolio command</label>
+                                <input class="terminal-input" id="terminalInput" name="command" type="text" spellcheck="false" autocapitalize="off" aria-describedby="terminalHelp" placeholder="type help and press Enter">
+                            </form>
+                            <p class="visually-hidden" id="terminalHelp">Available commands include help, about, skills, projects, contact, whoami, arcade, and clear.</p>
                         </div>
                     </div>
                 </div>
@@ -148,17 +213,18 @@
         </section>
 
         <!-- ===== ABOUT SECTION ===== -->
-        <section class="section about" id="about">
+        <section class="section about visual-section" id="about">
             <div class="container">
                 <div class="section-header">
+                    <p class="section-kicker">01 / THE FOUNDATION</p>
                     <h2 class="section-title">About Me</h2>
                     <p class="section-subtitle">A look into my journey, mindset, and technical interests</p>
                 </div>
 
                 <div class="about-content">
                     <div class="about-text">
-                        <p>I am a recent Computer Science graduate with a strong curiosity for cloud architecture and computer networks. My journey started with understanding how computers communicate and quickly expanded into hands-on cloud deployment with AWS, Linux command-line mastery, and network analysis.</p>
-                        <p>I enjoy understanding systems from the ground up—from TCP/IP packets and DNS routing to scalable cloud storage and bash automation scripts. As an eager, adaptable problem solver, I am actively seeking an entry-level Cloud or DevOps role where I can contribute to reliable infrastructure and continue growing my technical skillset.</p>
+                        <p>I am a recent Computer Science graduate, and my curiosity about technology began with a simple question: how does the internet work? Following that question led me to explore computer networks and cloud infrastructure, then build hands-on experience with AWS, Linux, and network analysis.</p>
+                        <p>I enjoy understanding systems from the ground up—from TCP/IP packets and DNS routing to scalable cloud storage and Bash automation. As an adaptable problem solver, I am actively seeking an entry-level Cloud or DevOps role where I can contribute to reliable infrastructure and continue growing my technical skillset.</p>
                     </div>
                     <div class="about-highlights">
                         <div class="highlight-card">
@@ -203,19 +269,46 @@
                         </div>
                     </div>
                 </div>
+                <aside class="learning-panel" aria-labelledby="learningTitle">
+                    <div class="learning-heading"><span class="learning-pulse" aria-hidden="true"></span><div><p class="section-kicker">IN PROGRESS</p><h3 id="learningTitle">Now learning</h3></div></div>
+                    <p class="learning-intro">Building on the fundamentals through small, hands-on steps.</p>
+                    <ul class="learning-list"><li><span>Docker fundamentals</span><span class="learning-state">Exploring</span></li><li><span>CI/CD pipeline basics</span><span class="learning-state">Exploring</span></li></ul>
+                </aside>
             </div>
         </section>
 
         <!-- ===== SKILLS SECTION ===== -->
-        <section class="section skills" id="skills">
+        <section class="section skills visual-section" id="skills">
             <div class="container">
                 <div class="section-header">
+                    <p class="section-kicker">02 / THE TOOLKIT</p>
                     <h2 class="section-title">Skills &amp; Technologies</h2>
                     <p class="section-subtitle">Tools and technologies I use to build, configure, and troubleshoot</p>
                 </div>
 
-                <div class="skills-grid">
-                    <div class="skill-category">
+                <div class="skills-filters" id="skillsFilters" role="group" aria-label="Filter skills by category" hidden>
+                    <button class="skill-filter-button" type="button" data-skill-filter="all" aria-controls="skillsGrid" aria-pressed="true">All</button>
+                    <button class="skill-filter-button" type="button" data-skill-filter="cloud" aria-controls="skillsGrid" aria-pressed="false">Cloud</button>
+                    <button class="skill-filter-button" type="button" data-skill-filter="networking" aria-controls="skillsGrid" aria-pressed="false">Networking</button>
+                    <button class="skill-filter-button" type="button" data-skill-filter="systems" aria-controls="skillsGrid" aria-pressed="false">Systems</button>
+                    <button class="skill-filter-button" type="button" data-skill-filter="development" aria-controls="skillsGrid" aria-pressed="false">Development</button>
+                    <button class="skill-filter-button" type="button" data-skill-filter="tools" aria-controls="skillsGrid" aria-pressed="false">Tools</button>
+                    <button class="skill-filter-button" type="button" data-skill-filter="strengths" aria-controls="skillsGrid" aria-pressed="false">Strengths</button>
+                </div>
+                <p class="visually-hidden" id="skillsFilterStatus" aria-live="polite">Showing all 6 skill categories.</p>
+
+                <div class="skill-pathway" aria-label="How my technical skills connect: Networking fundamentals lead to Linux and Bash automation, then AWS infrastructure, then cloud delivery.">
+                    <span class="skill-pathway-label">How the pieces connect</span>
+                    <ol class="skill-pathway-steps">
+                        <li><span class="pathway-node" aria-hidden="true">01</span><span>Networking</span></li>
+                        <li><span class="pathway-node" aria-hidden="true">02</span><span>Linux &amp; Bash</span></li>
+                        <li><span class="pathway-node" aria-hidden="true">03</span><span>AWS</span></li>
+                        <li><span class="pathway-node" aria-hidden="true">04</span><span>Cloud delivery</span></li>
+                    </ol>
+                </div>
+
+                <div class="skills-grid" id="skillsGrid">
+                    <div class="skill-category" data-skill-category="cloud">
                         <div class="skill-category-header">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
@@ -230,7 +323,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-category">
+                    <div class="skill-category" data-skill-category="networking">
                         <div class="skill-category-header">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
@@ -252,7 +345,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-category">
+                    <div class="skill-category" data-skill-category="systems">
                         <div class="skill-category-header">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="4 17 10 11 4 5"/>
@@ -268,7 +361,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-category">
+                    <div class="skill-category" data-skill-category="development">
                         <div class="skill-category-header">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="16 18 22 12 16 6"/>
@@ -285,7 +378,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-category">
+                    <div class="skill-category" data-skill-category="tools">
                         <div class="skill-category-header">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="3"/>
@@ -302,7 +395,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-category">
+                    <div class="skill-category" data-skill-category="strengths">
                         <div class="skill-category-header">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -327,9 +420,25 @@
         </section>
 
         <!-- ===== PROJECTS SECTION ===== -->
-        <section class="section projects" id="projects">
+        <section class="section field-notes visual-section" id="field-notes">
             <div class="container">
                 <div class="section-header">
+                    <p class="section-kicker">FIELD NOTES / SMALL DISCOVERIES</p>
+                    <h2 class="section-title">What I’m learning along the way</h2>
+                    <p class="section-subtitle">Short notes from following questions about networks and cloud systems.</p>
+                </div>
+                <div class="field-notes-grid">
+                    <article class="field-note"><span class="field-note-index">NOTE 01 · DNS</span><h3>Names become routes</h3><p>DNS maps a human-readable domain to an IP address, helping a browser find the server it needs.</p></article>
+                    <article class="field-note"><span class="field-note-index">NOTE 02 · CDN</span><h3>Closer can be faster</h3><p>A CDN can serve cached content from an edge location nearer to a visitor, reducing the trip to the origin.</p></article>
+                    <article class="field-note"><span class="field-note-index">NOTE 03 · LINUX</span><h3>Small scripts save repetition</h3><p>Shell automation turns repeatable command-line steps into a workflow that is easier to run consistently.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section projects visual-section" id="projects">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-kicker">04 / BUILT &amp; LEARNED</p>
                     <h2 class="section-title">Featured Projects</h2>
                     <p class="section-subtitle">Practical implementations in cloud hosting and system architecture</p>
                 </div>
@@ -338,21 +447,15 @@
                     <article class="project-card">
                         <div class="project-badge">Cloud Hosting &amp; Delivery</div>
                         <h3 class="project-title">Personal Website on AWS</h3>
-                        <p class="project-description">Implemented and deployed a static website on AWS using Amazon S3 for durable object storage and Amazon CloudFront as a global Content Delivery Network (CDN). Configured bucket access policies and secure HTTPS distribution to achieve low-latency, globally available web delivery. Utilized AI-assisted workflow for frontend generation while managing cloud configuration independently.</p>
-                        <div class="project-highlights">
-                            <span class="project-highlight">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                S3 Static Hosting
-                            </span>
-                            <span class="project-highlight">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                CloudFront Distribution
-                            </span>
-                            <span class="project-highlight">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Global Edge Caching
-                            </span>
-                        </div>
+                        <dl class="project-case-study">
+                            <div><dt>Goal</dt><dd>Publish a static portfolio worldwide.</dd></div>
+                            <div><dt>Build</dt><dd>S3 + CloudFront, secure access and HTTPS; AI-assisted frontend.</dd></div>
+                            <div><dt>Result</dt><dd>Global delivery; AWS configuration managed independently.</dd></div>
+                        </dl>
+                        <details class="project-details">
+                            <summary>Explore the build</summary>
+                            <p>Focused on a secure, globally delivered static site, bringing together object storage, CDN delivery, and HTTPS.</p>
+                        </details>
                         <div class="project-tags">
                             <span class="tech-tag">AWS S3</span>
                             <span class="tech-tag">AWS CloudFront</span>
@@ -360,47 +463,42 @@
                             <span class="tech-tag">HTML5</span>
                             <span class="tech-tag">CSS3</span>
                         </div>
+                        <a class="project-link" href="https://github.com/vvr-here/My_Portfolio" target="_blank" rel="noopener noreferrer" aria-label="View Personal Website on AWS source on GitHub">
+                            View source on GitHub <span aria-hidden="true">↗</span>
+                        </a>
                     </article>
 
                     <article class="project-card">
                         <div class="project-badge">Academic System Architecture</div>
                         <h3 class="project-title">SECURA — Secure File Storage System</h3>
-                        <p class="project-role">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                            Role: Cloud Design, Planning &amp; Documentation
-                        </p>
-                        <p class="project-description">Collaborated in an academic team project to plan and design a secure file storage architecture. Led the cloud infrastructure conceptualization, storage security workflows, and technical documentation. Designed the system layout to prioritize safe data transfer and access management, documented as an architectural blueprint.</p>
-                        <div class="project-highlights">
-                            <span class="project-highlight">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Architectural Blueprint
-                            </span>
-                            <span class="project-highlight">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Security Flow Planning
-                            </span>
-                            <span class="project-highlight">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Technical Documentation
-                            </span>
-                        </div>
+                        <dl class="project-case-study">
+                            <div><dt>Role</dt><dd>Led cloud design and documentation.</dd></div>
+                            <div><dt>Plan</dt><dd>Secure storage, transfers, and access workflows.</dd></div>
+                            <div><dt>Deliverable</dt><dd>Secure file-storage architecture blueprint.</dd></div>
+                        </dl>
+                        <details class="project-details">
+                            <summary>Explore the design</summary>
+                            <p>The project centered on mapping secure storage, file transfer, and access workflows into a clear architecture blueprint.</p>
+                        </details>
                         <div class="project-tags">
                             <span class="tech-tag">Cloud Architecture</span>
                             <span class="tech-tag">System Design</span>
-                            <span class="tech-tag">Documentation</span>
-                            <span class="tech-tag">Access Management</span>
                         </div>
+                        <a class="project-link" href="https://github.com/mini-page/Secura" target="_blank" rel="noopener noreferrer" aria-label="View SECURA source on GitHub">
+                            View source on GitHub <span aria-hidden="true">↗</span>
+                        </a>
                     </article>
                 </div>
             </div>
         </section>
 
         <!-- ===== CERTIFICATIONS SECTION ===== -->
-        <section class="section certifications" id="certifications">
+        <section class="section certifications visual-section" id="certifications">
             <div class="container">
                 <div class="section-header">
+                    <p class="section-kicker">05 / VERIFIED KNOWLEDGE</p>
                     <h2 class="section-title">Certifications</h2>
-                    <p class="section-subtitle">Verified credentials in cloud fundamentals, networking, and scripting</p>
+                    <p class="section-subtitle">Verified credentials in cloud fundamentals, networking, scripting, and data technologies</p>
                 </div>
 
                 <div class="certs-grid">
@@ -415,6 +513,7 @@
                         <p class="cert-issuer">AWS Skill Builder</p>
                         <p class="cert-date">September 2026</p>
                         <p class="cert-focus">VPC concepts, subnets, routing, gateways, and cloud connectivity</p>
+                        <a class="cert-link" href="https://drive.google.com/file/d/1l4JIxC2SUhvhr_8c-QnRTe6rX-r1w_YF/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="View AWS Networking Basics certificate">View certificate <span aria-hidden="true">↗</span></a>
                     </div>
 
                     <div class="cert-card">
@@ -428,6 +527,7 @@
                         <p class="cert-issuer">AWS Skill Builder</p>
                         <p class="cert-date">October 2026</p>
                         <p class="cert-focus">Cloud concepts, core AWS services, security, pricing, and support models</p>
+                        <a class="cert-link" href="https://drive.google.com/file/d/1zRaJXR2LLJmXHaiFq8u5JHKbr_59eJsT/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="View AWS Cloud Practitioner Essentials certificate">View certificate <span aria-hidden="true">↗</span></a>
                     </div>
 
                     <div class="cert-card">
@@ -441,6 +541,7 @@
                         <p class="cert-issuer">Udemy</p>
                         <p class="cert-date">February 2026</p>
                         <p class="cert-focus">Shell scripting, automated task execution, and Linux CLI efficiency</p>
+                        <a class="cert-link" href="https://drive.google.com/file/d/1RHhkve_Nox2ZBEpCWs3zSv5yRkWFc6vh/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="View Beginner Bash Scripting and Automation certificate">View certificate <span aria-hidden="true">↗</span></a>
                     </div>
 
                     <div class="cert-card">
@@ -454,6 +555,7 @@
                         <p class="cert-issuer">Udemy</p>
                         <p class="cert-date">June 2026</p>
                         <p class="cert-focus">Network scanning, port discovery, firewall evasion, and reconnaissance</p>
+                        <a class="cert-link" href="https://drive.google.com/file/d/171lOgKCkB7-Kx2VFSUkMZ-P6OnoErxwP/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="View Nmap Mastery certificate">View certificate <span aria-hidden="true">↗</span></a>
                     </div>
 
                     <div class="cert-card">
@@ -467,15 +569,29 @@
                         <p class="cert-issuer">Udemy</p>
                         <p class="cert-date">August 2026</p>
                         <p class="cert-focus">Documentation, productivity tools, spreadsheets, and collaboration</p>
+                        <a class="cert-link" href="https://drive.google.com/file/d/1Az41MaL9aCNXRZQDWcRoiVzlLb5LjGxy/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="View Complete MS Office and Google Workspace certificate">View certificate <span aria-hidden="true">↗</span></a>
+                    </div>
+
+                    <div class="cert-card">
+                        <div class="cert-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <h3 class="cert-title">Real-World Applications of Big Data &amp; Cloud Technologies</h3>
+                        <p class="cert-focus">Credential covering real-world applications of big data and cloud technologies.</p>
+                        <a class="cert-link" href="https://drive.google.com/file/d/1sUZV6SqwfLy07ukpX7bC_eEt8fs5UM96/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="View Real-World Applications of Big Data and Cloud Technologies certificate">View certificate <span aria-hidden="true">↗</span></a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ===== EDUCATION SECTION ===== -->
-        <section class="section education" id="education">
+        <section class="section education visual-section" id="education">
             <div class="container">
                 <div class="section-header">
+                    <p class="section-kicker">06 / THE JOURNEY</p>
                     <h2 class="section-title">Education</h2>
                     <p class="section-subtitle">Academic foundation in Computer Science</p>
                 </div>
@@ -508,29 +624,21 @@
         </section>
 
         <!-- ===== CONTACT SECTION ===== -->
-        <section class="section contact" id="contact">
+        <section class="section contact visual-section" id="contact">
             <div class="container">
                 <div class="section-header">
+                    <p class="section-kicker">07 / NEXT CONNECTION</p>
                     <h2 class="section-title">Get In Touch</h2>
                     <p class="section-subtitle">Have an opportunity or want to connect? My inbox is always open.</p>
                 </div>
 
                 <div class="contact-content">
+                    <p class="contact-availability"><span class="status-dot"></span> Open to cloud &amp; DevOps roles</p>
                     <p class="contact-text">I am actively looking for entry-level Cloud Engineering, DevOps, or Network Support roles and internships. Whether you have a question or an opportunity, feel free to reach out!</p>
 
                     <div class="contact-actions">
-                        <a href="mailto:vineetvikramrao9369@gmail.com" class="btn btn-primary contact-btn">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                            </svg>
-                            Send Email
-                        </a>
-                        <button class="btn btn-secondary contact-btn" id="copyEmailBtn" data-email="vineetvikramrao9369@gmail.com">
-                            <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                            </svg>
+                        <button type="button" class="btn btn-primary contact-btn copy-email-btn" data-email="vineetvikramrao9369@gmail.com">
+                            <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                             <svg class="icon-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
                                 <polyline points="20 6 9 17 4 12"/>
                             </svg>
@@ -566,12 +674,54 @@
 
     </main>
 
+    <dialog class="arcade-dialog" id="arcadeDialog" aria-labelledby="arcadeTitle" aria-describedby="arcadeInstructions">
+        <div class="arcade-shell">
+            <div class="arcade-topbar">
+                <div class="arcade-window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                <span class="arcade-window-title">VINEET.EXE <span>— CLOUD RUNNER</span></span>
+                <button class="arcade-close" id="arcadeClose" type="button" aria-label="Close arcade">×</button>
+            </div>
+            <div class="arcade-content">
+                <div class="arcade-heading-row">
+                    <div>
+                        <p class="arcade-kicker">A MINI SIDE QUEST</p>
+                        <h2 id="arcadeTitle">Route the packets</h2>
+                    </div>
+                    <div class="arcade-stats" role="group" aria-label="Game statistics">
+                        <div class="arcade-score" aria-live="polite">SIGNALS <span id="arcadeScore">0 / 3</span></div>
+                        <div class="arcade-best" aria-live="polite">BEST TIME <span id="arcadeBestTime">—</span></div>
+                    </div>
+                </div>
+                <p class="arcade-instructions" id="arcadeInstructions">Collect 3 blue signals and dodge the firewalls. Use ← → or A / D, or tap the controls below.</p>
+                <div class="arcade-game-frame">
+                    <canvas id="arcadeCanvas" width="720" height="300" tabindex="0" role="img" aria-label="Cloud Runner game. Move left and right to collect blue network signals and avoid red firewall blocks."></canvas>
+                    <div class="arcade-start-screen" id="arcadeStartScreen">
+                        <span aria-hidden="true">☁</span>
+                        <p>Ready to route some packets?</p>
+                        <button class="btn btn-primary arcade-start" id="arcadeStart" type="button">Start game</button>
+                    </div>
+                </div>
+                <div class="arcade-controls" aria-label="Touch game controls">
+                    <button class="arcade-control" type="button" data-move="left" aria-label="Move left">←</button>
+                    <span>MOVE</span>
+                    <button class="arcade-control" type="button" data-move="right" aria-label="Move right">→</button>
+                </div>
+                <p class="arcade-message" id="arcadeMessage" aria-live="polite">Signal collected: <span id="arcadeSignalCount">0</span> / 3</p>
+                <div class="arcade-reveal" id="arcadeReveal" hidden>
+                    <span class="arcade-reveal-label">A LITTLE ABOUT ME</span>
+                    <p>I love tracing how things work from the ground up—from a single network packet and DNS lookup to reliable cloud systems and automation.</p>
+                    <a href="#about" class="arcade-story-link" id="arcadeStoryLink">More of my story <span aria-hidden="true">↗</span></a>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container footer-content">
             <p class="footer-text">&copy; 2026 Vineet. Crafted with semantic HTML, modern CSS &amp; JavaScript.</p>
             <div class="footer-links">
-                <a href="https://github.com/galac01389" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <a href="https://github.com/vvr-here" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
                     </svg>
