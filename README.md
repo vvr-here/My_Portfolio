@@ -39,5 +39,3 @@ This is a personal portfolio project. Its structure and implementation can be us
 ---
 
 **Built by Vineet Vikram Rao**
-
-*Aspiring Cloud Engineer | Cloud & Networking Enthusiast*
